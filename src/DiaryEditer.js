@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 const DiaryEditer = () => {
   const [state, setState] = useState({
@@ -6,6 +6,9 @@ const DiaryEditer = () => {
     content: "",
     emotion: 1,
   });
+
+  const authorInput = useRef();
+  const contentInput = useRef();
 
   const handleChageState = (e) => {
     setState({
@@ -15,17 +18,30 @@ const DiaryEditer = () => {
   };
 
   const handleSubmit = () => {
-    console.log(state);
+    if (state.author.length < 1) {
+      authorInput.current.focus();
+      return;
+    }
+    if (state.content.length < 5) {
+      contentInput.current.focus();
+      return;
+    }
     alert("저장 성공");
   };
   return (
     <div className="DiaryEditer">
       <h2>오늘의 일기</h2>
       <div>
-        <input name="author" value={state.author} onChange={handleChageState} />
+        <input
+          ref={authorInput}
+          name="author"
+          value={state.author}
+          onChange={handleChageState}
+        />
       </div>
       <div>
         <textarea
+          ref={contentInput}
           name="content"
           value={state.content}
           onChange={handleChageState}
